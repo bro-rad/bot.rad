@@ -69,6 +69,13 @@ Run smart contract test with `yarn hardhat:test`
 - Edit your frontend homepage at `packages/nextjs/app/page.tsx`. For guidance on [routing](https://nextjs.org/docs/app/building-your-application/routing/defining-routes) and configuring [pages/layouts](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts) checkout the Next.js documentation.
 - Edit your deployment scripts in `packages/hardhat/deploy`
 
+## COTI Deployments
+
+`YourContract` is deployed at `0x662b13141bb19d92abaa8dbc37bda1c83d212831` on both COTI networks:
+
+- [COTI Mainnet](https://mainnet.cotiscan.io/address/0x662b13141bb19d92abaa8dbc37bda1c83d212831?tab=contract)
+- [COTI Testnet](https://testnet.cotiscan.io/address/0x662b13141bb19d92abaa8dbc37bda1c83d212831?tab=contract)
+
 
 ## Documentation
 
