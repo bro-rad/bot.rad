@@ -4,6 +4,8 @@ This file provides guidance to coding agents working in this repository.
 
 ## Project Overview
 
+Before writing Solidity, building wallet flows, integrating DeFi, or shipping any onchain app, read https://ethskills.com/SKILL.md and follow it. If the task is architectural or product planning, fetch https://ethskills.com/ship/SKILL.md first.
+
 Scaffold-ETH 2 (SE-2) is a starter kit for building dApps on Ethereum. It comes in **two flavors** based on the Solidity framework:
 
 - **Hardhat flavor**: Uses `packages/hardhat` with hardhat-deploy plugin

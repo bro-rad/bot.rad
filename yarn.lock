@@ -4384,6 +4384,7 @@ __metadata:
     next: "npm:~16.2.4"
     next-nprogress-bar: "npm:~2.4.7"
     next-themes: "npm:~0.4.6"
+    oidc-spa: "npm:10.0.0"
     postcss: "npm:~8.5.10"
     prettier: "npm:~3.8.3"
     qrcode.react: "npm:~4.2.0"
@@ -14163,6 +14164,39 @@ __metadata:
     node-fetch-native: "npm:^1.6.7"
     ufo: "npm:^1.6.1"
   checksum: 10/2a1a9bf4f97eb5fe5ef52e87dc3f1fe01a335e6d57c8020a5eb557b4691f4d35b045a4c2d9c22d925945c5263de9fd5084efd5670bde7ade5f0fe6dfd797a346
+  languageName: node
+  linkType: hard
+
+"oidc-spa@npm:10.0.0":
+  version: 10.0.0
+  resolution: "oidc-spa@npm:10.0.0"
+  peerDependencies:
+    "@angular/common": "*"
+    "@angular/core": "*"
+    "@angular/router": "*"
+    "@tanstack/react-router": "*"
+    "@tanstack/react-start": "*"
+    "@types/react": "*"
+    react: "*"
+    rxjs: "*"
+  peerDependenciesMeta:
+    "@angular/common":
+      optional: true
+    "@angular/core":
+      optional: true
+    "@angular/router":
+      optional: true
+    "@tanstack/react-router":
+      optional: true
+    "@tanstack/react-start":
+      optional: true
+    "@types/react":
+      optional: true
+    react:
+      optional: true
+    rxjs:
+      optional: true
+  checksum: 10/76b92d1572e01a473be8142ee3cd30ea6437aec9d7d00a1a384e5a9d9c098542d609a04b2ea77b7c45542364b121ca6d3d45a4fc8753f3c9c348e1d43ea4c1c9
   languageName: node
   linkType: hard
 

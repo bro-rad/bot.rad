@@ -5,6 +5,7 @@ import { Address } from "@scaffold-ui/components";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { RemiliaLogin } from "~~/components/RemiliaLogin";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth";
 
 const Home: NextPage = () => {
@@ -19,12 +20,23 @@ const Home: NextPage = () => {
             <span className="block text-2xl mb-2">Welcome to</span>
             <span className="block text-4xl font-bold">Scaffold-ETH 2</span>
           </h1>
-          <div className="flex justify-center items-center space-x-2 flex-col">
+
+          <div className="mt-8 flex justify-center">
+            <RemiliaLogin />
+          </div>
+
+          <div className="mt-6 flex justify-center">
+            <Link href="/profile" className="btn btn-secondary">
+              Open protected profile
+            </Link>
+          </div>
+
+          <div className="flex justify-center items-center space-x-2 flex-col mt-8">
             <p className="my-2 font-medium">Connected Address:</p>
             <Address address={connectedAddress} chain={targetNetwork} />
           </div>
 
-          <p className="text-center text-lg">
+          <p className="text-center text-lg mt-8">
             Get started by editing{" "}
             <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
               packages/nextjs/app/page.tsx
