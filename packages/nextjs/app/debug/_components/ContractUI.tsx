@@ -83,7 +83,7 @@ const CotiContract = ({
 export const ContractUI = ({ contractName }: ContractUIProps) => {
   const { targetNetwork } = useTargetNetwork();
   const fallbackChainId = scaffoldConfig.targetNetworks[0]?.id ?? 1;
-  const safeTargetNetworkName = targetNetwork?.name ?? "COTI Testnet";
+  const safeTargetNetworkName = targetNetwork?.name ?? scaffoldConfig.targetNetworks[0]?.name ?? "configured network";
   const safeChainId = targetNetwork?.id ?? fallbackChainId;
   const { data: deployedContractData, isLoading: deployedContractLoading } = useDeployedContractInfo({ contractName });
 
