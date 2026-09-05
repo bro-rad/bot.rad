@@ -29,8 +29,8 @@ const deployTasks = [
 export default defineConfig({
   plugins: [hardhatToolbox, HardhatDeploy],
   solidity: {
-    compilers: [
-      {
+    profiles: {
+      default: {
         version: "0.8.30",
         settings: {
           optimizer: {
@@ -38,11 +38,19 @@ export default defineConfig({
             // https://docs.soliditylang.org/en/latest/using-the-compiler.html#optimizer-options
             runs: 200,
           },
-          // COTI testnet rejects PUSH0 bytecode; force the Paris EVM fork for compatibility.
+        },
+      },
+      coti: {
+        version: "0.8.30",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
           evmVersion: "paris",
         },
       },
-    ],
+    },
   },
   generateTypedArtifacts: {
     destinations: [

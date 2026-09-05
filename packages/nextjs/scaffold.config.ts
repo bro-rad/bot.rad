@@ -42,31 +42,9 @@ export type ScaffoldConfig = BaseConfig;
 
 export const DEFAULT_ALCHEMY_API_KEY = "IZYEU2cWBgnFmgiTAgpWD";
 
-const targetNetworkName = process.env.NEXT_PUBLIC_TARGET_NETWORK ?? "cotiTestnet";
-const targetNetworkByName = {
-  hardhat: chains.hardhat,
-  mainnet: chains.mainnet,
-  sepolia: chains.sepolia,
-  optimism: chains.optimism,
-  optimismSepolia: chains.optimismSepolia,
-  base: chains.base,
-  baseSepolia: chains.baseSepolia,
-  arbitrum: chains.arbitrum,
-  arbitrumSepolia: chains.arbitrumSepolia,
-  coti: cotiMainnet,
-  cotiTestnet,
-};
-
-const selectedTargetNetwork = targetNetworkByName[targetNetworkName as keyof typeof targetNetworkByName];
-
-if (!selectedTargetNetwork) {
-  throw new Error(`Unsupported NEXT_PUBLIC_TARGET_NETWORK: ${targetNetworkName}`);
-}
-
 const scaffoldConfig = {
   // The networks on which your DApp is live.
-  // Select the COTI environment where the dapp is deployed.
-  targetNetworks: [selectedTargetNetwork],
+  targetNetworks: [chains.hardhat],
   // The interval at which your front-end polls the RPC servers for new data (it has no effect if you only target the local network (default is 4000))
   pollingInterval: 3000,
   // This is ours Alchemy's default API key.

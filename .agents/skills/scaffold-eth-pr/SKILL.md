@@ -18,6 +18,7 @@ Follow Scaffold-ETH 2's contribution rules:
 
 - Confirm that an issue exists and that the change has been discussed or agreed upon before opening a PR.
 - Keep the PR focused on the issue. Do not mix unrelated cleanup, spelling fixes, environment policy changes, or broad refactors.
+- Prefer the least-impact implementation that solves the issue. Preserve the target branch's defaults and behavior unless changing them is part of the agreed scope.
 - Use a descriptive branch and commit message.
 - Match the repository's existing formatting, package boundaries, hooks, and configuration patterns.
 - Update the README when the change affects documented setup or supported networks.
@@ -70,6 +71,12 @@ If the source branch is based on an older Scaffold-ETH revision or its implement
 
 Keep changes in the existing Scaffold-ETH ownership boundaries. Do not introduce a new source of truth, abstraction, environment policy, generated artifact, or package dependency unless the issue requires it and the target branch's patterns support it. Treat generated files as PR content only when the repository's current workflow expects them.
 
+For network integrations, preserve the original target-network defaults and make new networks opt-in through the existing configuration pattern. Do not add an environment variable that silently changes the app's default network. Do not include deployment JSON, generated ABIs, or deployed addresses unless the target repository explicitly requires committed deployment output for that integration.
+
+For network-specific compiler behavior, keep the default compiler profile unchanged. Use the toolchain's supported build-profile or equivalent mechanism to scope compatibility settings such as `evmVersion` to the affected network. Validate both the default profile and the special network profile.
+
+Prefer public package exports. Do not import implementation files through `node_modules` paths or suppress their missing types with `@ts-expect-error`. If a required component is not exported, either use the supported public component API or make the smallest upstream/package-export change necessary and explain it in the PR.
+
 ### 4. Validate the focused change
 
 Run the narrowest relevant checks first, then the package checks required by the touched areas. Typical checks include:
@@ -81,6 +88,13 @@ yarn --cwd packages/hardhat test
 yarn --cwd packages/nextjs lint
 yarn --cwd packages/nextjs build
 git diff --check
+```
+
+When compiler behavior differs by network, also run the relevant profile checks, for example:
+
+```bash
+yarn --cwd packages/hardhat hardhat compile --build-profile default
+yarn --cwd packages/hardhat hardhat compile --build-profile <network-profile>
 ```
 
 Do not claim a check passed if dependencies, credentials, a chain, or a dev server prevented it from running. Record skipped checks and why.
@@ -99,6 +113,7 @@ The commit package should contain:
 
 - A focused commit with a conventional, imperative message that names the behavior changed.
 - No unrelated formatting, generated output, secrets, local environment files, or speculative refactors.
+- No deployment artifacts or deployed addresses unless explicitly required by the target repository's conventions.
 - A short scope summary and the exact validation results.
 
 Use one focused commit when practical. If the work naturally has separate concerns, use a small number of independently reviewable commits rather than a sequence of fixup noise. Then publish the source branch:
