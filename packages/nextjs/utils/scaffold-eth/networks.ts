@@ -1,5 +1,5 @@
 import * as chains from "viem/chains";
-import scaffoldConfig from "~~/scaffold.config";
+import scaffoldConfig, { cotiMainnet, cotiTestnet } from "~~/scaffold.config";
 
 type ChainAttributes = {
   // color | [lightThemeColor, darkThemeColor]
@@ -45,6 +45,12 @@ export const getAlchemyHttpUrl = (chainId: number) => {
 export const NETWORKS_EXTRA_DATA: Record<string, ChainAttributes> = {
   [chains.hardhat.id]: {
     color: "#b8af0c",
+  },
+  [cotiMainnet.id]: {
+    color: ["#0ea5e9", "#6ee7b7"],
+  },
+  [cotiTestnet.id]: {
+    color: ["#1d4ed8", "#7dd3fc"],
   },
   [chains.mainnet.id]: {
     color: "#ff8b9e",
@@ -96,8 +102,14 @@ export const NETWORKS_EXTRA_DATA: Record<string, ChainAttributes> = {
  * Gives the block explorer transaction URL, returns empty string if the network is a local chain
  */
 export function getBlockExplorerTxLink(chainId: number, txnHash: string) {
-  const chainNames = Object.keys(chains);
+  const customChains = [cotiMainnet, cotiTestnet];
+  const targetChain = customChains.find(chain => chain.id === chainId);
 
+  if (targetChain?.blockExplorers?.default?.url) {
+    return `${targetChain.blockExplorers.default.url}/tx/${txnHash}`;
+  }
+
+  const chainNames = Object.keys(chains);
   const targetChainArr = chainNames.filter(chainName => {
     const wagmiChain = chains[chainName as keyof typeof chains];
     return wagmiChain.id === chainId;
@@ -107,8 +119,8 @@ export function getBlockExplorerTxLink(chainId: number, txnHash: string) {
     return "";
   }
 
-  const targetChain = targetChainArr[0] as keyof typeof chains;
-  const blockExplorerTxURL = chains[targetChain]?.blockExplorers?.default?.url;
+  const targetChainName = targetChainArr[0] as keyof typeof chains;
+  const blockExplorerTxURL = chains[targetChainName]?.blockExplorers?.default?.url;
 
   if (!blockExplorerTxURL) {
     return "";

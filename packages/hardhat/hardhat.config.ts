@@ -38,6 +38,8 @@ export default defineConfig({
             // https://docs.soliditylang.org/en/latest/using-the-compiler.html#optimizer-options
             runs: 200,
           },
+          // COTI testnet rejects PUSH0 bytecode; force the Paris EVM fork for compatibility.
+          evmVersion: "paris",
         },
       },
     ],
@@ -128,6 +130,16 @@ export default defineConfig({
     celoSepolia: {
       type: "http",
       url: "https://forno.celo-sepolia.celo-testnet.org/",
+      accounts: [deployerPrivateKey],
+    },
+    coti: {
+      type: "http",
+      url: "https://mainnet.coti.io/rpc",
+      accounts: [deployerPrivateKey],
+    },
+    cotiTestnet: {
+      type: "http",
+      url: "https://testnet.coti.io/rpc",
       accounts: [deployerPrivateKey],
     },
     polygon: {

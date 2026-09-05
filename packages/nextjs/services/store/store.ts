@@ -2,6 +2,19 @@ import { create } from "zustand";
 import scaffoldConfig from "~~/scaffold.config";
 import { ChainWithAttributes, NETWORKS_EXTRA_DATA } from "~~/utils/scaffold-eth";
 
+const getDefaultTargetNetwork = (): ChainWithAttributes => {
+  const firstTargetNetwork = scaffoldConfig.targetNetworks[0];
+
+  if (!firstTargetNetwork) {
+    throw new Error("No target network configured in scaffold.config.ts");
+  }
+
+  return {
+    ...firstTargetNetwork,
+    ...NETWORKS_EXTRA_DATA[firstTargetNetwork.id],
+  };
+};
+
 /**
  * Zustand Store
  *
@@ -17,9 +30,6 @@ type GlobalState = {
 };
 
 export const useGlobalState = create<GlobalState>(set => ({
-  targetNetwork: {
-    ...scaffoldConfig.targetNetworks[0],
-    ...NETWORKS_EXTRA_DATA[scaffoldConfig.targetNetworks[0].id],
-  },
+  targetNetwork: getDefaultTargetNetwork(),
   setTargetNetwork: (newTargetNetwork: ChainWithAttributes) => set(() => ({ targetNetwork: newTargetNetwork })),
 }));
