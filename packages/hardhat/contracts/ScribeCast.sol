@@ -3,40 +3,35 @@ pragma solidity >=0.8.0 <0.9.0;
 
 /**
  * Cast into call and event data or Scribe into event data.
- * @author quantumtekh.eth
- * source: https://github.com/OwlWilderness/se-2/tree/spellbook
- * forked from: scaffold https://github.com/OwlWilderness/se-2
- * uri: https://spellbook-psi.vercel.app 
  */
 
 contract ScribeCast {
- 	string public Name = "ScribeCast";
-	string public Symbol = "SCRAISBTE";
-	string private COULD_NOT_CAST = "failed to cast. verify payable _to.";
-	string private CAST = "cast";
-	string private SCRIBE = "scribe";
+	string public constant NAME = "ScribeCast";
+	string public constant SYMBOL = "SCRAISBTE";
+	string private constant CAST = "cast";
+	string private constant SCRIBE = "scribe";
 
-	//result of action (cast or scribe)
-	event result(
-		string action, 
-		address indexed to,
-		address indexed from,
-		bytes spell,
-		bool success
-	);
-	
-	//cast a spell: project in call and event data
-	function cast(address payable _to, bytes memory _spell) public payable{
-		(bool success, ) = address(_to).call{ value: msg.value }(_spell);
-		if(success == false){
-			emit result(CAST, _to, msg.sender, _spell, false);
-			revert(COULD_NOT_CAST);
-		}
-		emit result(CAST, _to, msg.sender, _spell, true);
+	bool private locked;
+
+	error InvalidTarget();
+	error ReentrantCall();
+	error CastFailed();
+
+	event result(string action, address indexed to, address indexed from, bytes32 spellCommitment, bool success);
+
+	function cast(address payable to, bytes calldata spell) external payable {
+		if (to == address(0) || to == address(this)) revert InvalidTarget();
+		if (locked) revert ReentrantCall();
+		locked = true;
+		(bool success, ) = to.call{ value: msg.value }(spell);
+		locked = false;
+
+		if (!success) revert CastFailed();
+		emit result(CAST, to, msg.sender, keccak256(spell), true);
 	}
-	
-	//scribe a spell:  into event data
-	function scribe(address _to, bytes memory _spell) public {
-		emit result(SCRIBE, _to, msg.sender, _spell, true);
+
+	function scribe(address to, bytes calldata spell) external {
+		if (to == address(0)) revert InvalidTarget();
+		emit result(SCRIBE, to, msg.sender, keccak256(spell), true);
 	}
 }

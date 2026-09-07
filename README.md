@@ -1,7 +1,16 @@
-# Scribe Cast
-Emit an event and or create calldata with base64 data.
+# Scribe Cast on COTI
+Create calldata for a target contract or publish a privacy-preserving commitment to spell data.
 
-Optionally upload an image or enter data and convert to bytes.
+The COTI branch targets COTI V2 and keeps raw spell bytes out of emitted events. A commitment proves that data existed without making the data itself part of the public event log.
+
+## COTI Networks
+
+| Network | Chain ID | RPC | Explorer |
+| --- | ---: | --- | --- |
+| COTI Testnet | `7082400` | `https://testnet.coti.io/rpc` | [COTIScan Testnet](https://testnet.cotiscan.io) |
+| COTI Mainnet | `2632500` | `https://mainnet.coti.io/rpc` | [COTIScan](https://mainnet.cotiscan.io) |
+
+Use the testnet faucet at [faucet.coti.io](https://faucet.coti.io) before testing. COTI privacy is not automatic: private computation requires COTI's onboarding and encrypted data flows. Ordinary calldata and native transfers remain visible to the network.
 
 ## Deployment Information
 Demo (not mobile friendly)
@@ -20,42 +29,24 @@ uri: [spellbook-psi.vercel.app](https://spellbook-psi.vercel.app)
 - [Mainnet Verified Contract](https://etherscan.io/address/0x0B4cbCfDb14D4D162fb34850E65413E9C5fB530F#code)
 
 ## Contract Information
-`
- 	string public Name = "ScribeCast";
-	string public Symbol = "SCRAISBTE";
-`
 
-### Scribe
-`	
-	//scribe a spell:  into event data
-	function scribe(address _to, bytes memory _spell) public {
-		emit result(SCRIBE, _to, msg.sender, _spell, true);
-	}
-`
-### Cast
-`
-//cast a spell: project in call and event data
-	function cast(address payable _to, bytes memory _spell) public payable{
-		(bool success, ) = address(_to).call{ value: msg.value }(_spell);
-		if(success == false){
-			emit result(CAST, _to, msg.sender, _spell, false);
-			revert(COULD_NOT_CAST);
-		}
-		emit result(CAST, _to, msg.sender, _spell, true);
-	}
-`
+- `NAME` is `ScribeCast`.
+- `SYMBOL` is `SCRAISBTE`.
+- `scribe` emits `keccak256(spell)` as `spellCommitment`; raw spell bytes are not emitted.
+- `cast` forwards a call and value, rejects the zero address and the ScribeCast contract itself, and uses a reentrancy lock.
+- Failed casts revert with `CastFailed`; the failed call does not leave a success event.
 
 ### Result Event
-`
-	//result of action (cast or scribe)
-	event result(
-		string action, 
-		address indexed to,
-		address indexed from,
-		bytes spell,
-		bool success
-	);
-`
+
+```solidity
+event result(
+    string action,
+    address indexed to,
+    address indexed from,
+    bytes32 spellCommitment,
+    bool success
+);
+```
 
 
 # 🏗 Scaffold-ETH 2

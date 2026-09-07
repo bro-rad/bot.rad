@@ -1,4 +1,3 @@
-import { bytesToString, toBytes } from "viem";
 import { Address } from "~~/components/scaffold-eth";
 import { useScaffoldEventHistory } from "~~/hooks/scaffold-eth";
 
@@ -24,7 +23,7 @@ export const SpellTable = () => {
               <tr>
                 <th className="bg-primary">Action</th>
                 <th className="bg-primary">Address</th>
-                <th className="bg-primary">Spell</th>
+                <th className="bg-primary">Commitment</th>
               </tr>
             </thead>
             <tbody>
@@ -43,10 +42,7 @@ export const SpellTable = () => {
                         <Address address={event.args.to} />
                       </td>
                       <td>
-                        <img
-                          src={bytesToString(toBytes(event.args.spell!))}
-                          alt={bytesToString(toBytes(event.args.spell!))}
-                        />
+                        <code className="break-all">{event.args[3]}</code>
                       </td>
                     </tr>
                   );

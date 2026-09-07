@@ -43,7 +43,7 @@ const config: HardhatUserConfig = {
         url: `https://eth-mainnet.g.alchemy.com/v2/${providerApiKey}`,
         enabled: process.env.MAINNET_FORKING_ENABLED === "true",
       },
-      gas: 1000000000,
+      gas: "auto",
     },
     mainnet: {
       url: `https://eth-mainnet.g.alchemy.com/v2/${providerApiKey}`,
@@ -141,6 +141,16 @@ const config: HardhatUserConfig = {
       url: "https://sepolia.publicgoods.network",
       accounts: [deployerPrivateKey],
     },
+    coti: {
+      url: "https://mainnet.coti.io/rpc",
+      accounts: [deployerPrivateKey],
+      chainId: 2632500,
+    },
+    cotiTestnet: {
+      url: "https://testnet.coti.io/rpc",
+      accounts: [deployerPrivateKey],
+      chainId: 7082400,
+    },
   },
   etherscan: {
     customChains: [
@@ -162,11 +172,29 @@ const config: HardhatUserConfig = {
           browserURL: "https://gnosisscan.io/",
         },
       },
+      {
+        network: "coti",
+        chainId: 2632500,
+        urls: {
+          apiURL: "https://mainnet.cotiscan.io/api",
+          browserURL: "https://mainnet.cotiscan.io/",
+        },
+      },
+      {
+        network: "cotiTestnet",
+        chainId: 7082400,
+        urls: {
+          apiURL: "https://testnet.cotiscan.io/api",
+          browserURL: "https://testnet.cotiscan.io/",
+        },
+      },
     ],
     apiKey: {
       //blockscout explorer verification does not require keys
       chiado: "not-needed",
       gnosis: `${gnosisscanApiKey}`,
+      coti: "not-needed",
+      cotiTestnet: "not-needed",
     },
   },
   verify: {

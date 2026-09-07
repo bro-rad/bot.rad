@@ -1,15 +1,14 @@
 import { useScaffoldContractWrite } from "../../hooks/scaffold-eth/";
-import { Address, parseEther } from "viem";
+import { Address, keccak256, parseEther, toBytes } from "viem";
 
 export const Scribe = ({ to, script, refresh }: { to: Address; script: any; refresh: any }) => {
-  const { writeAsync } = useScaffoldContractWrite({
+  const { writeAsync, isMining } = useScaffoldContractWrite({
     contractName: "ScribeCast",
     functionName: "scribe",
-    args: [to, script],
+    args: [to, keccak256(toBytes(script))],
     value: parseEther("0"),
     blockConfirmations: 1,
-    onBlockConfirmation: txnReceipt => {
-      console.log("Transaction blockHash", txnReceipt.blockHash);
+    onBlockConfirmation: () => {
       refresh();
     },
   });
@@ -18,8 +17,8 @@ export const Scribe = ({ to, script, refresh }: { to: Address; script: any; refr
     <>
       <div>
         <div>
-          <button className="btn btn-info " onClick={() => writeAsync()}>
-            {"SCRIBE (emit;)"}
+          <button className="btn btn-info" disabled={isMining} onClick={() => writeAsync()}>
+            {isMining ? "COMMITTING..." : "SCRIBE COMMITMENT"}
           </button>
         </div>
       </div>

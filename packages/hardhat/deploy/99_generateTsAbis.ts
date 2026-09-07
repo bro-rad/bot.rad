@@ -24,6 +24,7 @@ function getDirectories(path: string) {
   return fs
     .readdirSync(path, { withFileTypes: true })
     .filter(dirent => dirent.isDirectory())
+    .filter(dirent => fs.existsSync(`${path}/${dirent.name}/.chainId`))
     .map(dirent => dirent.name);
 }
 
