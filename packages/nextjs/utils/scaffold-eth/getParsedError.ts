@@ -8,6 +8,11 @@ import { BaseError as BaseViemError, ContractFunctionRevertedError } from "viem"
 export const getParsedError = (error: any): string => {
   const parsedError = error?.walk ? error.walk() : error;
 
+  const emptyAbiDataError = 'Cannot decode zero data ("0x") with ABI parameters.';
+  if (parsedError?.message === emptyAbiDataError || parsedError?.details === emptyAbiDataError) {
+    return "Transaction reverted without a reason.";
+  }
+
   if (parsedError instanceof BaseViemError) {
     if (parsedError.details) {
       return parsedError.details;
