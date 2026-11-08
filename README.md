@@ -1,4 +1,10 @@
-# 🏗 Scaffold-ETH 2
+# bot.rad
+
+A Scaffold-ETH 2 fork with ScribeCast and COTI development source on `feature/scribecast-coti-hardhat3`. [`ScribeCast.sol`](packages/hardhat/contracts/ScribeCast.sol) implements `cast` (forward a call/value and emit a commitment) and `scribe` (emit a commitment without a target call); its deploy script is in `packages/hardhat/deploy/00_deploy_scribe_cast.ts`. This source is not a claim of a deployed or qualified bot runtime.
+
+The standalone encrypted-counter quickstart is maintained separately in `coti-garbled-data-quickstart`; wallet-owned COTI private sessions live in `punk-wallet`. The archived local planning material is not a second quickstart implementation task.
+
+## Scaffold-ETH foundation
 
 <h4 align="center">
   <a href="https://docs.scaffoldeth.io">Documentation</a> |
@@ -24,18 +30,18 @@
 
 Before you begin, you need to install the following tools:
 
-- [Node (>= v20.18.3)](https://nodejs.org/en/download/)
-- Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
+- Node >=22.10.0 (the current root manifest requirement)
+- Yarn 4.13.0 (pinned by `packageManager` in `package.json`)
 - [Git](https://git-scm.com/downloads)
 
-## Quickstart
+## Disposable local scaffold setup
 
-To get started with Scaffold-ETH 2, follow the steps below:
+These are generic local scaffold instructions, not evidence of COTI deployment or end-to-end bot operation. Do not restart/redeploy an existing stateful development session as a recovery shortcut.
 
 1. Install dependencies if it was skipped in CLI:
 
 ```
-cd my-dapp-example
+cd bot.rad
 yarn install
 ```
 
@@ -47,7 +53,7 @@ yarn chain
 
 This command starts a local Ethereum network using Hardhat. The network runs on your local machine and can be used for testing and development. You can customize the network configuration in `packages/hardhat/hardhat.config.ts`.
 
-3. On a second terminal, deploy the test contract:
+3. On a second terminal, deploy the local contracts:
 
 ```
 yarn deploy
